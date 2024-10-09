@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
 
-set(CMAKE_PROJECT_NAME "TurboScreenshotMaker")
+set(CMAKE_PROJECT_NAME "CaptureIt")
 
 #set the project name
 project(CMAKE_PROJECT_NAME)

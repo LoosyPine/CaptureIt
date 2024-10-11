@@ -27,5 +27,5 @@ link_libraries(${X11_LIBRARIES})
 include_directories(${X11_INCLUDE_DIR})
 
 #add the executable
-add_executable(App main.cpp)
+add_executable(App source/main.cpp)
 target_link_libraries(App png)

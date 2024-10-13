@@ -59,7 +59,7 @@ int main()
     png_set_IHDR(write_ptr, info_ptr,
                 DISPLAY_WIDTH, DISPLAY_HEIGHT,
                 8,
-                PNG_COLOR_TYPE_RGB,
+                PNG_COLOR_TYPE_RGB_ALPHA,
                 PNG_INTERLACE_NONE,
                 PNG_COMPRESSION_TYPE_DEFAULT,
                 PNG_FILTER_TYPE_DEFAULT
@@ -68,11 +68,12 @@ int main()
     png_bytep *row_pointers = new png_bytep[DISPLAY_HEIGHT];
     for(int i = 0; i < DISPLAY_HEIGHT; i++)
     {
-        row_pointers[i] = (png_bytep)(image->data) + i * (image->bytes_per_line);
+        //пройдись по каждому индексу в image->data и преобразуй в png_bytep
+        row_pointers[i] = (png_bytep)((image->data) + i * (image->bytes_per_line));
     }
     png_set_rows(write_ptr, info_ptr, row_pointers);
     png_init_io(write_ptr, fp);
-    png_write_png(write_ptr, info_ptr, PNG_TRANSFORM_STRIP_FILLER, nullptr);
+    png_write_png(write_ptr, info_ptr, PNG_TRANSFORM_BGR, nullptr);
     png_write_end(write_ptr, info_ptr);
 
     std::cout << image->data[0] << std::endl;

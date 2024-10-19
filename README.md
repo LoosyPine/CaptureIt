@@ -1,1 +1,1 @@
-# CaptureIt
+# CapIt

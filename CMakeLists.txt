@@ -1,31 +1,36 @@
-#cmake_minimum_required(VERSION 3.10)
-
-# Set some basic project attributes
-#project (CuptureIt
-	#VERSION 0.1
-	#DESCRIPTION "A Hello World Project")
-
-# This project will output an executable file
-#add_executable(${PROJECT_NAME} CuptureIt.cpp)
-
-# Create a simple configuration header
-#configure_file(config.h.in config.h)
-
-# Include the configuration header in the build
-#target_include_directories(${PROJECT_NAME} PUBLIC "${PROJECT_BINARY_DIR}")
-
 cmake_minimum_required(VERSION 3.10)
 
-set(CMAKE_PROJECT_NAME "CaptureIt")
-set(LIBPNG_PATH "/usr/lib/x86_64-linux-gnu/libpng.a")
-
 #set the project name
-project(CMAKE_PROJECT_NAME)
+project(CaptureIt)
 
+#VARIABLES:
+set(EXECUTABLE_APP "App")
+set(LIB_XORG "Xorg")
+set(LIB_IGS "IGS")
+set(ABSTRACT_LIB_PNG "APNG")
+set(LIB_CONTROLLER "Controller")
+
+set(APP_PATH "${CMAKE_CURRENT_SOURCE_DIR}/main.cpp")
+set(LIB_XORG_PATH "${CMAKE_CURRENT_SOURCE_DIR}/framework/xorg.cpp")
+set(LIB_IGS_PATH "${CMAKE_CURRENT_SOURCE_DIR}/framework/session_interface.cpp")
+set(ABSTRACT_LIB_PNG_PATH "${CMAKE_CURRENT_SOURCE_DIR}/framework/abstract_lib_png.cpp")
+set(LIB_CONTROLLER_PATH "${CMAKE_CURRENT_SOURCE_DIR}/framework/controller.cpp")
+
+#include X11 library from system
 find_package(X11 REQUIRED)
 link_libraries(${X11_LIBRARIES})
 include_directories(${X11_INCLUDE_DIR})
 
-#add the executable
-add_executable(App source/main.cpp)
-target_link_libraries(App png)
+add_executable(${EXECUTABLE_APP} ${APP_PATH})
+add_library(${LIB_XORG} STATIC ${LIB_XORG_PATH})
+add_library(${LIB_IGS} STATIC ${LIB_IGS_PATH})
+add_library(${ABSTRACT_LIB_PNG} STATIC ${ABSTRACT_LIB_PNG_PATH})
+add_library(${LIB_CONTROLLER} STATIC ${LIB_CONTROLLER_PATH})
+
+
+target_link_libraries(${EXECUTABLE_APP} PRIVATE ${LIB_XORG})
+target_link_libraries(${LIB_XORG} PRIVATE X11)
+target_link_libraries(${EXECUTABLE_APP} PRIVATE ${LIB_CONTROLLER})
+target_link_libraries(${LIB_CONTROLLER} PRIVATE ${LIB_IGS})
+target_link_libraries(${LIB_CONTROLLER} PRIVATE ${ABSTRACT_LIB_PNG})
+target_link_libraries(${ABSTRACT_LIB_PNG} PRIVATE png)
